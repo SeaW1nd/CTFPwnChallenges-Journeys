@@ -1,0 +1,2 @@
+picoCTF{qu1t3_a_v13w_2020}
+Dùng exiftool để check file này là loại file ảnh BMP. Lên wiki check BMP thì thấy nó có lỗi ở offset 0x0E phải chỉnh lại thành 0x28(40) để file hết lỗi, sau đó tìm cách nâng chiều cao của ảnh lên thì sẽ ra flag

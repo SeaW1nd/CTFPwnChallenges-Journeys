@@ -1,0 +1,2 @@
+picoCTF{bf6acf878dcbd752f4721e41b1b1b66b}
+Dùng binwalk 4 lần và binwalk -e để extract nó ra thì sẽ ra tới flag.txt

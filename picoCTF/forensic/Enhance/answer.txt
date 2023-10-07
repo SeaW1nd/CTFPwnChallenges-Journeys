@@ -1,0 +1,2 @@
+picoCTF{3nh4nc3d_24374675}
+Dùng string là sẽ thấy flag
