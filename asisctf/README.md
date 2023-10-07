@@ -113,6 +113,7 @@ Lại là một challenge với full mitigations nữa. Khá là khó cho việc
 Tiếp đến ta sẽ check mã giả của challenge này = IDA Pro.
 
 ![](https://hackmd.io/_uploads/ByQlGNaga.png)
+
 Ta tiến hành phân tích luồn thực thi chương trình này thì chương trình có 3 options là:
 
 **1. Edit text:** Đọc 264 bytes ký tự từ input của ta
