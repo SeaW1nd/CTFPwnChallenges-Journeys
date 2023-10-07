@@ -111,14 +111,21 @@ Tiếp đến thì mình sẽ kiểm tra mitigations của file challenge này.
 ![](https://hackmd.io/_uploads/rJUP-Eal6.png)
 Lại là một challenge với full mitigations nữa. Khá là khó cho việc khai thác lỗ hổng sau này.
 Tiếp đến ta sẽ check mã giả của challenge này = IDA Pro.
+
 ![](https://hackmd.io/_uploads/ByQlGNaga.png)
 Ta tiến hành phân tích luồn thực thi chương trình này thì chương trình có 3 options là:
+
 **1. Edit text:** Đọc 264 bytes ký tự từ input của ta
+
 ![](https://hackmd.io/_uploads/Skg_GNpx6.png)
+
 **2. Save text:** Copy 264 bytes input của ta vào trong stack:
+
 ![](https://hackmd.io/_uploads/SJJiMETe6.png)
+
 **3. Exit:** Đơn giản là thoát khỏi vòng lặp và thoát chương trình
 4. Ngoài ra còn một hàm nữa là hàm show_error() sẽ được gọi khi ta nhập sai options:
+
 ![](https://hackmd.io/_uploads/SJrl7Vpg6.png)
 
 Khi đầu thoát tưởng chương trình nhìn như không có lỗ hổng để ta có thể khai thác. Nhưng mất một thời gian thì mình đã nhìn ra được lỗi format string ở ngay trong printf trong hàm show_error()
@@ -126,6 +133,7 @@ Cụ thể hơn thì ta sẽ tiến hành debug và đặt breakpoints ngay trư
 ![](https://hackmd.io/_uploads/rJaF846ga.png)
 Ta sẽ thấy thanh RAX sẽ lấy địa chỉ của **0x555555558121** (text+256) và xem nó như địa chỉ và trỏ đến chuỗi string "Invalid choice!"
 ![](https://hackmd.io/_uploads/HyJ6UNae6.png)
+
 Nhưng mà ta lại nhớ đến option 1 **edit text** cho phép ta ghi tổng cộng 264 bytes vào đây, cho nên ta có thể partial overwrite địa chỉ tại **<text+256>** 2 bytes đầu. Vì ta đã biết PIE đã bật nên địa chỉ sẽ luôn random ngoài trừ 3 nibbles cuối. Cho nên tại nibble thứ 4 của địa chỉ ta phải bruteforce với xác suất $1 \over 16$ để làm sao cho địa chỉ tại **<text+256>** sẽ trỏ đến chính địa chỉ chứa input của ta. Xác suất khá là cao đấy.
 Đồng thời ta cũng thấy được lỗi format strings trong hàm printf nên ta sẽ lợi dụng nó để leak ra được địa chỉ của stack, địa chỉ của hàm main và quan trọng nhất là địa chỉ của libc.
 ![](https://hackmd.io/_uploads/rku75NTgp.png)
