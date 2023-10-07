@@ -132,7 +132,7 @@ Ta tiến hành phân tích luồn thực thi chương trình này thì chương
 Khi đầu thoát tưởng chương trình nhìn như không có lỗ hổng để ta có thể khai thác. Nhưng mất một thời gian thì mình đã nhìn ra được lỗi format string ở ngay trong printf trong hàm show_error()
 Cụ thể hơn thì ta sẽ tiến hành debug và đặt breakpoints ngay trước hàm printf để xem chuyện gì xảy ra.
 ![](https://hackmd.io/_uploads/rJaF846ga.png)
-Ta sẽ thấy thanh RAX sẽ lấy địa chỉ của **0x555555558121** (text+256) và xem nó như địa chỉ và trỏ đến chuỗi string "Invalid choice!"
+Ta sẽ thấy thanh RAX sẽ lấy địa chỉ của **0x55555555608** (text+256) và xem nó như địa chỉ và trỏ đến chuỗi string "Invalid choice!"
 ![](https://hackmd.io/_uploads/HyJ6UNae6.png)
 
 Nhưng mà ta lại nhớ đến option 1 **edit text** cho phép ta ghi tổng cộng 264 bytes vào đây, cho nên ta có thể partial overwrite địa chỉ tại **<text+256>** 2 bytes đầu. Vì ta đã biết PIE đã bật nên địa chỉ sẽ luôn random ngoài trừ 3 nibbles cuối. Cho nên tại nibble thứ 4 của địa chỉ ta phải bruteforce với xác suất $1 \over 16$ để làm sao cho địa chỉ tại **<text+256>** sẽ trỏ đến chính địa chỉ chứa input của ta. Xác suất khá là cao đấy.
