@@ -12,11 +12,13 @@ Thôi tám chuyện vậy là đủ rồi, vào phần writeup thôi.
 - Solution:
 
 Đầu tiên ta sẽ tiến hành kiểm tra các mitigations của file challenge này.
+
 ![](https://hackmd.io/_uploads/r1hFsb1Wp.png)
 
 Ở đây thì có mitigation của stack và PIE mitigation đã tắt (điều này sẽ có lợi cho lỗi bufferoverflow nên trong chương trình có tồn tại lỗi đó)
 
 Tiếp đến ta sẽ check đến luồng thực thi và cấu trúc chương trình thông qua IDA Pro.
+
 ![](https://hackmd.io/_uploads/SkUmnZyWT.png)
 
 Chương trình sẽ có 3 chức năng chính:
