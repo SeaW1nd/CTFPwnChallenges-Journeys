@@ -12,13 +12,11 @@ Thôi tám chuyện vậy là đủ rồi, vào phần writeup thôi.
 - Solution:
 
 Đầu tiên ta sẽ tiến hành kiểm tra các mitigations của file challenge này.
-
 ![](https://hackmd.io/_uploads/r1hFsb1Wp.png)
 
 Ở đây thì có mitigation của stack và PIE mitigation đã tắt (điều này sẽ có lợi cho lỗi bufferoverflow nên trong chương trình có tồn tại lỗi đó)
 
 Tiếp đến ta sẽ check đến luồng thực thi và cấu trúc chương trình thông qua IDA Pro.
-
 ![](https://hackmd.io/_uploads/SkUmnZyWT.png)
 
 Chương trình sẽ có 3 chức năng chính:
@@ -85,6 +83,32 @@ p.interactive()
 ## Pwn2:
 - Đề bài: [Challenge_link](https://warmup.ascis.vn/files/c6ec92ba170edf460b4eec3f8dd9cf3e/pwn2?token=eyJ1c2VyX2lkIjozNjQ0LCJ0ZWFtX2lkIjo2NDMsImZpbGVfaWQiOjU5fQ.ZSGJ9A.JajO4Fjeg9uI0hpD9nYzv9FmzDE)
 - Soluton:
+
+Đầu tiên ta sẽ tiến hành kiểm tra các mitigations của challenge này.
+
+![](https://hackmd.io/_uploads/B1Awimg-T.png)
+
+Oh wow! Tất cả các mitigations đều không được bật. Một mảnh đất đầy màu mỡ cho việc khai thác lỗ hổng :relaxed: 
+
+Tiếp đến thì ta sẽ tiến hành xem mã giả và luồng thực thi chương trình thông qua IDA Pro.
+
+![](https://hackmd.io/_uploads/HyHXnXlWT.png)
+
+Phân tích luồng thực thi của chương trình thì ta thấy ngay rõ ràng ở hàm getflag có lỗ hỗng shellcode execution (do ta thấy mitigation của challenge này đã disable NX và có RWX segments) 
+
+Tức là việc ở input thứ 2 (cụ thể là ở hàm `read(0,s,0x64)`) thì ta có thể inject shellcode để có thể chiếm được shell của chương trình
+
+Đến đây thì ta cần biết chút ít về lập trình assembly (cụ thể là kiến trúc x86-64) ở để có thể viết được shellcode chiếm shell
+
+
+Thì ở solution của mình, vì lúc đó trong thời gian thi (áp lực các kiểu) và một phần là do mình lười :V , cho nên mình sẽ sử dụng shellcode có sẵn trên mạng (nguồn mình sẽ để ở đây [link](https://shell-storm.org/shellcode/files/shellcode-603.html)) 
+
+Vì shellcode này chỉ có 30 bytes length trong khi trong hàm main sẽ kiểm tra xem length của shellcode mà mình nhập vào có lớn hơn 39 (0x27) hay không. Cho nên để lấp đầy phần còn thiếu trong shellcode thì mình sẽ sử dụng lệnh nop (hay còn gọi là kỹ thuật nop sled với chức năng là không làm gì cả :V, nó sẽ tiến hành thực thi lệnh nop để trượt dài cho đến shellcode của mình). 
+
+
+
+
+
 - Answer: Đây là script để giải ra bài này của mình:
 ```python!=
 from pwn import *
