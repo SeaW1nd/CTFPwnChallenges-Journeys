@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>HTML renderer</title>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+        <link href="https://unpkg.com/nes.css@2.3.0/css/nes.min.css" rel="stylesheet"/>
+        <link href="https://unpkg.com/nes.icons@3.0.0-beta.3/css/nes-icons.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <h1>HTML Renderer</h1>
+        <div class="nes-container is-rounded with-title">
+            <input name="p" id="html-input"></input>
+        </div>
+        <br>
+        <button class="nes-btn" id="render-btn">render</button>
+        <br>
+        <div class="nes-container is-rounded with-title result-container">
+            <h2>Result</h2>
+            <div class="result-wrapper">
+                <p id="result">result goes here...</p>
+            </div>
+        </div>
+        <div class="msg-container">
+            <p>I just created a free HTML rendering tools. What could possibly go wrong in a HTML renderer, right? </p>
+            <p>© Shin24</p>
+        </div>
+    </body>
+    <style>
+        html {
+            cursor: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABFklEQVRYR9WXURLDIAhE6/0PbSdOtUpcd1Gnpv1KGpTHBpCE1/cXq+vrMph7dGvXZTtpfW10DCA5jrH1H0Jhs5E0hnZdCR+vb5S8Nn8mQCeS9BdSalYJqMBjAGzq59xAESN7VFVUgV8AZB/dZBR7QTFDCqGquvUBVVoEtgIwpQRzmANSFHgWQKExHdIrPeuMvQNDarXe6nC/AutgV3JW+6bgqQLeV8FekRtgV+ToDKEKnACYKsfZjjkam7a0ZpYTytwmgainpC3HvwBocgKOxqRjehoR9DFKNFYtOwCGYCszobeCbl26N6yyQ6g8X/Wex/rBPsNEV6qAMaJPMynIHQCoSqS9JSMmwef51LflTgCRszU7DvAGiV6mHWfsaVUAAAAASUVORK5CYII=),auto;
+        }
+        body, .msg-container {
+            font-family: 'Press Start 2P';
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+        input {
+            border: none;
+            outline: none;
+        }
+        .msg-container {
+            width: 60%;
+            margin-top: 40px;
+        }
+        .result-container {
+            margin-top: 40px;
+        }
+    </style>
+    <script>
+        const renderBtn = document.getElementById("render-btn");
+        renderBtn.addEventListener("click", async () => {
+            const htmlInput = document.getElementById("html-input");
+            let result = await fetch("/eval?p="+htmlInput.value);
+            result = await result.text();
+            document.getElementById("result").innerText = result;
+        })
+    </script>
+</html>

@@ -1,0 +1,2 @@
+picoCTF{the_m3tadata_1s_modified}
+Dùng exiftool và decode base64 của Current IPTC Digest sẽ ra flag
